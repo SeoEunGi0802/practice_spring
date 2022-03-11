@@ -12,8 +12,4 @@ import java.util.List;
 @Repository
 public interface BoardHitRepository extends JpaRepository<BoardHitEntity, Long> {
     List<BoardHitEntity> findByIdAndIp(Long id, String ip); // WHERE id = ? AND ip = ?
-
-//    @Modifying
-//    @Query("SELECT bh.sno FROM BoardHitEntity bh WHERE bh.id = :id AND bh.ip = :ip")
-//    boolean findByIdAndIp(Long id, String ip);
 }
