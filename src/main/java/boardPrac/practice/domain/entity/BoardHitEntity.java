@@ -18,7 +18,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "board_hit")
+@Table(name = "board_hit", indexes = {
+        @Index(name="idx_id", columnList = "id"),
+        @Index(name="idx_ip", columnList = "ip"),
+})
 public class BoardHitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

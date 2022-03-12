@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>리스트</title>
+    <title>삭제된 리스트</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
@@ -19,25 +19,23 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="text-center" th:each="bdList : ${bdList}">
+        <tr class="text-center" th:each="delBdList : ${delBdList}">
             <th scope="row">
-                <a th:href="@{'/view?bdId=' + ${bdList.id}}">
-                    <span th:text="${bdList.id}"></span>
-                </a>
+                <span th:text="${delBdList.id}"></span>
             </th>
             <td>
-                <a th:href="@{'/view?bdId=' + ${bdList.id}}">
-                    <span th:text="${bdList.title}"></span>
+                <a th:href="@{'/view?bdId=' + ${delBdList.id}}">
+                    <span th:text="${delBdList.title}"></span>
                 </a>
             </td>
             <td>
-                <span th:text="${bdList.writer}"></span>
+                <span th:text="${delBdList.writer}"></span>
             </td>
             <td>
-                <span th:text="${bdList.hitcnt}"></span>
+                <span th:text="${delBdList.hitcnt}"></span>
             </td>
             <td>
-                <span th:text="${#temporals.format(bdList.regdt, 'yyyy-MM-dd HH:mm')}"></span>
+                <span th:text="${#temporals.format(delBdList.regdt, 'yyyy-MM-dd HH:mm')}"></span>
             </td>
         </tr>
         </tbody>
@@ -45,7 +43,7 @@
     <div class="row">
         <div class="col-auto mr-auto"></div>
         <div class="col-auto">
-            <a class="btn btn-danger" th:href="@{/delete}" role="button">삭제된 글</a>
+            <a class="btn btn-success" th:href="@{/}" role="button">리스트</a>
             <a class="btn btn-primary" th:href="@{/write}" role="button">글쓰기</a>
         </div>
     </div>

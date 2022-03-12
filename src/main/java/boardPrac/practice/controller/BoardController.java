@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class BoardController {
@@ -22,9 +20,9 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/")
+    @GetMapping(value = {"/", "/index", "/main", "/list"})
     public String list(Model model) {
-        List<BoardDto> boardDtoList = boardService.getBoardList();
+        List<BoardDto> boardDtoList = boardService.getBoardList("N");
         model.addAttribute("bdList", boardDtoList);
         return "board/list.html";
     }
@@ -36,48 +34,48 @@ public class BoardController {
 
     @PostMapping("/write")
     public String writeBoard(BoardDto boardDto) {
-        boardService.savePost(boardDto);
+        boardService.saveBoard(boardDto);
         return "redirect:/";
     }
 
     @GetMapping("/view")
     public String view(@RequestParam Long bdId, Model model) {
-        String ip = getClientIp();
-
-        BoardDto boardDto = boardService.getBoardId(bdId, ip);
+        BoardDto boardDto = boardService.getBoardId(bdId);
         model.addAttribute("bdView", boardDto);
         return "board/view.html";
     }
 
-    public static String getClientIp() {
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+    @GetMapping("/edit")
+    public String edit(@RequestParam Long bdId, Model model) {
+        BoardDto boardDto = boardService.getBoardId(bdId);
+        model.addAttribute("bdEdit", boardDto);
+        return "board/edit.html";
+    }
 
-        String ip = req.getHeader("X-FORWARDED-FOR");
+    @PostMapping("/edit")
+    public String update(BoardDto boardDto) {
+        boardService.updateBoard(boardDto);
+        return "redirect:/";
+    }
 
-        if (ip == null) {
-            ip = req.getHeader("Proxy-Client-IP");
+    @GetMapping(value = {"/delete"})
+    public String deleteList(Model model) {
+        List<BoardDto> boardDtoList = boardService.getBoardList("Y");
+        model.addAttribute("delBdList", boardDtoList);
+        return "board/list.d.html";
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam Long bdId, HttpServletRequest httpServletRequest) {
+        String mode = httpServletRequest.getParameter("mode");
+        if (Objects.equals(mode, "restore")) {
+            mode = "N";
+        } else if (Objects.equals(mode, "delete")) {
+            mode = "Y";
         }
 
-        if (ip == null) {
-            ip = req.getHeader("WL-Proxy-Client-IP");
-        }
+        boardService.actionBoard(bdId, mode);
 
-        if (ip == null) {
-            ip = req.getHeader("HTTP_CLIENT_IP");
-        }
-
-        if (ip == null) {
-            ip = req.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-
-        if (ip == null) {
-            ip = req.getRemoteAddr();
-        }
-
-        if (ip == "0:0:0:0:0:0:0:1") {
-            ip = "127.0.0.1";
-        }
-
-        return ip;
+        return "redirect:/";
     }
 }

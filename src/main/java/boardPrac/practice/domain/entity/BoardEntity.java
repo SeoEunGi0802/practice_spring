@@ -45,7 +45,7 @@ public class BoardEntity {
     private LocalDateTime regdt;
 
     @LastModifiedDate
-    @Column(nullable = true)
+    @Column(columnDefinition = "TIMESTAMP", nullable = true)
     private LocalDateTime moddt;
 
     @Builder

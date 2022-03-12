@@ -23,12 +23,18 @@
             <a class="btn btn-light" th:href="@{'/'}" role="button">목록</a>
         </div>
         <div class="col-auto">
-            <a class="btn btn-info" th:href="@{'/view/edit?bdId' + ${bdView.id}}" role="button">수정</a>
+            <a class="btn btn-info" th:href="@{'/edit?bdId=' + ${bdView.id}}" role="button">수정</a>
         </div>
         <div class="col-auto">
-            <form id="delete-form" th:action="@{'/view/delete?bdId' + ${bdView.id}}" method="post">
-                <input type="hidden" name="_method" value="delete"/>
-                <button id="delete-btn" type="submit" class="btn btn-danger">삭제</button>
+            <form id="delete-form" th:action="@{'/delete?bdId=' + ${bdView.id}}" method="post">
+                <div th:switch="${bdView.delfl}">
+                    <input th:case="'Y'" type="hidden" name="mode" value="restore"/>
+                    <input th:case="'N'" type="hidden" name="mode" value="delete"/>
+                </div>
+                <div th:switch="${bdView.delfl}">
+                    <button th:case="'Y'" type="submit" id="restore-btn" class="btn btn-success">복구</button>
+                    <button th:case="'N'" type="submit" id="delete-btn" class="btn btn-danger">삭제</button>
+                </div>
             </form>
         </div>
     </div>
