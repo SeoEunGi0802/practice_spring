@@ -1,6 +1,7 @@
 package boardPrac.practice.controller;
 
 import boardPrac.practice.dto.BoardDto;
+import boardPrac.practice.dto.BoardReplyDto;
 import boardPrac.practice.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,9 @@ public class BoardController {
     public String view(@RequestParam Long bdId, Model model) {
         BoardDto boardDto = boardService.getBoardId(bdId);
         model.addAttribute("bdView", boardDto);
+
+        List<BoardReplyDto> boardReplyDto = boardService.getReplyBoardId(bdId);
+        model.addAttribute("replyList", boardReplyDto);
         return "board/view.html";
     }
 
@@ -77,5 +81,19 @@ public class BoardController {
         boardService.actionBoard(bdId, mode);
 
         return "redirect:/";
+    }
+
+    @PostMapping("/reply")
+    public String replyBoard(BoardReplyDto boardReplyDto, HttpServletRequest httpServletRequest) {
+        boardService.saveReply(boardReplyDto);
+        return "redirect:/view?bdId=" + httpServletRequest.getParameter("id");
+    }
+
+
+    @GetMapping("/replyAction")
+    public String replyAction(@RequestParam Long sno, @RequestParam Long id) {
+        boardService.actionReply(sno);
+
+        return "redirect:/view?bdId=" + id;
     }
 }

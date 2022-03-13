@@ -2,9 +2,12 @@ package boardPrac.practice.service;
 
 import boardPrac.practice.domain.entity.BoardEntity;
 import boardPrac.practice.domain.entity.BoardHitEntity;
+import boardPrac.practice.domain.entity.BoardReplyEntity;
 import boardPrac.practice.domain.repository.BoardRepository;
 import boardPrac.practice.domain.repository.BoardHitRepository;
+import boardPrac.practice.domain.repository.BoardReplyRepository;
 import boardPrac.practice.dto.BoardDto;
+import boardPrac.practice.dto.BoardReplyDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,11 +22,13 @@ import java.util.List;
 public class BoardService {
     private BoardRepository boardRepository;
     private BoardHitRepository boardHitRepository;
+    private BoardReplyRepository boardReplyRepository;
     private LocalDateTime nowDt = LocalDateTime.now();
 
-    public BoardService(BoardRepository boardRepository, BoardHitRepository boardHitRepository) {
+    public BoardService(BoardRepository boardRepository, BoardHitRepository boardHitRepository, BoardReplyRepository boardReplyRepository) {
         this.boardRepository = boardRepository;
         this.boardHitRepository = boardHitRepository;
+        this.boardReplyRepository = boardReplyRepository;
     }
 
     @Transactional
@@ -39,6 +44,17 @@ public class BoardService {
     @Transactional
     public void actionBoard(Long id, String mode) {
         boardRepository.actionBoard(id, mode, nowDt);
+    }
+
+    @Transactional
+    public Long saveReply(BoardReplyDto boardReplyDto) {
+        boardReplyDto.setIp(getClientIp());
+        return boardReplyRepository.save(boardReplyDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public void actionReply(Long sno) {
+        boardReplyRepository.actionReply(sno, nowDt);
     }
 
     @Transactional
@@ -70,6 +86,18 @@ public class BoardService {
 
         BoardDto boardDto = BoardDto.builder().id(board.getId()).writer(board.getWriter()).title(board.getTitle()).content(board.getContent()).delfl(board.getDelfl()).regdt(board.getRegdt()).build();
         return boardDto;
+    }
+
+    @Transactional
+    public List<BoardReplyDto> getReplyBoardId(Long id) {
+        List<BoardReplyEntity> boardReplyList = boardReplyRepository.findByIdAndDelfl(id, "N");
+        List<BoardReplyDto> boardReplyDtoList = new ArrayList<>();
+
+        for (BoardReplyEntity boardReply : boardReplyList) {
+            BoardReplyDto boardReplyDto = BoardReplyDto.builder().sno(boardReply.getSno()).id(boardReply.getId()).content(boardReply.getContent()).writer(boardReply.getWriter()).regdt(boardReply.getRegdt()).build();
+            boardReplyDtoList.add(boardReplyDto);
+        }
+        return boardReplyDtoList;
     }
 
     public static String getClientIp() {

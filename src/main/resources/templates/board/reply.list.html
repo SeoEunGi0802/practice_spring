@@ -1,0 +1,44 @@
+<table class="table">
+    <thead class="thead-light">
+    <tr class="text-center">
+        <th scope="col">작성자</th>
+        <th scope="col">내용</th>
+        <th scope="col">작성일</th>
+        <th scope="col">삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-center" th:each="replyList : ${replyList}">
+        <td>
+            <span th:text="${replyList.writer}"></span>
+        </td>
+        <td>
+            <span th:text="${replyList.content}"></span>
+        </td>
+        <td>
+            <span th:text="${#temporals.format(replyList.regdt, 'yyyy-MM-dd HH:mm')}"></span>
+        </td>
+        <td>
+            <button type="button" id="delete-btn" class="btn btn-danger" th:onclick="replyAction([[${replyList.sno}]])">삭제</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function replyAction(sno) {
+        let alert = confirm("삭제하시겠습니까?");
+        let data = {
+            "sno": sno,
+            "id": [[${bdView.id}]],
+        };
+
+        if (alert) {
+            $.ajax({
+                url: "/replyAction",
+                type: "get",
+                data,
+            });
+        }
+    }
+</script>
