@@ -1,6 +1,6 @@
-package boardPrac.practice.dto;
+package boardPrac.practice.board.dto;
 
-import boardPrac.practice.domain.entity.BoardReplyEntity;
+import boardPrac.practice.board.domain.entity.BoardEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,35 +9,33 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @NoArgsConstructor
-public class BoardReplyDto {
-    private Long sno;
+public class BoardDto {
     private Long id;
+    private String title;
     private String content;
     private String writer;
-    private String ip;
+    private Integer hitcnt;
     private String delfl;
     private LocalDateTime regdt;
     private LocalDateTime moddt;
 
-    public BoardReplyEntity toEntity() {
-        BoardReplyEntity build = BoardReplyEntity.builder()
-                .sno(sno)
+    public BoardEntity toEntity() {
+        BoardEntity build = BoardEntity.builder()
                 .id(id)
+                .title(title)
                 .content(content)
                 .writer(writer)
-                .ip(ip)
-                .delfl(delfl)
                 .build();
         return build;
     }
 
     @Builder
-    public BoardReplyDto(Long sno, Long id, String content, String writer, String ip, String delfl, LocalDateTime regdt, LocalDateTime moddt) {
-        this.sno = sno;
+    public BoardDto(Long id, String title, String content, String writer, Integer hitcnt, String delfl, LocalDateTime regdt, LocalDateTime moddt) {
         this.id = id;
+        this.title = title;
         this.content = content;
         this.writer = writer;
-        this.ip = ip;
+        this.hitcnt = hitcnt;
         this.delfl = delfl;
         this.regdt = regdt;
         this.moddt = moddt;

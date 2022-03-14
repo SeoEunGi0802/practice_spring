@@ -1,13 +1,13 @@
-package boardPrac.practice.service;
+package boardPrac.practice.board.service;
 
-import boardPrac.practice.domain.entity.BoardEntity;
-import boardPrac.practice.domain.entity.BoardHitEntity;
-import boardPrac.practice.domain.entity.BoardReplyEntity;
-import boardPrac.practice.domain.repository.BoardRepository;
-import boardPrac.practice.domain.repository.BoardHitRepository;
-import boardPrac.practice.domain.repository.BoardReplyRepository;
-import boardPrac.practice.dto.BoardDto;
-import boardPrac.practice.dto.BoardReplyDto;
+import boardPrac.practice.board.domain.entity.BoardEntity;
+import boardPrac.practice.board.domain.entity.BoardHitEntity;
+import boardPrac.practice.board.domain.entity.BoardReplyEntity;
+import boardPrac.practice.board.domain.repository.BoardRepository;
+import boardPrac.practice.board.domain.repository.BoardHitRepository;
+import boardPrac.practice.board.domain.repository.BoardReplyRepository;
+import boardPrac.practice.board.dto.BoardDto;
+import boardPrac.practice.board.dto.BoardReplyDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

@@ -1,6 +1,6 @@
-package boardPrac.practice.dto;
+package boardPrac.practice.board.dto;
 
-import boardPrac.practice.domain.entity.BoardHitEntity;
+import boardPrac.practice.board.domain.entity.BoardHitEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package boardPrac.practice.domain.entity;
+package boardPrac.practice.board.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -18,14 +19,17 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "board")
-public class BoardEntity {
+@Table(name = "board_reply", indexes = {
+        @Index(name="idx_id", columnList = "id"),
+})
+public class BoardReplyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "BIGINT(20) AUTO_INCREMENT")
+    private Long sno;
 
-    @Column(length = 100, nullable = false)
-    private String title;
+    @Column(columnDefinition = "BIGINT(20)")
+    private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
@@ -33,8 +37,8 @@ public class BoardEntity {
     @Column(length = 10, nullable = false)
     private String writer;
 
-    @Column(columnDefinition = "INT(11) DEFAULT 0")
-    private Integer hitcnt;
+    @Column(columnDefinition = "VARCHAR(20)")
+    private String ip;
 
     @Column(columnDefinition = "CHAR(1) DEFAULT 'N'")
     private String delfl;
@@ -43,16 +47,17 @@ public class BoardEntity {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime regdt;
 
+    @LastModifiedDate
     @Column(columnDefinition = "TIMESTAMP", nullable = true)
     private LocalDateTime moddt;
 
     @Builder
-    public BoardEntity(Long id, String title, String content, String writer, Integer hitcnt, String delfl) {
+    public BoardReplyEntity(Long sno, Long id, String content, String writer, String ip, String delfl) {
+        this.sno = sno;
         this.id = id;
-        this.title = title;
         this.content = content;
         this.writer = writer;
-        this.hitcnt = hitcnt;
+        this.ip = ip;
         this.delfl = delfl;
     }
 }

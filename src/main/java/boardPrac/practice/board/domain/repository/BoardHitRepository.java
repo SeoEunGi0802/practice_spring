@@ -1,6 +1,6 @@
-package boardPrac.practice.domain.repository;
+package boardPrac.practice.board.domain.repository;
 
-import boardPrac.practice.domain.entity.BoardHitEntity;
+import boardPrac.practice.board.domain.entity.BoardHitEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

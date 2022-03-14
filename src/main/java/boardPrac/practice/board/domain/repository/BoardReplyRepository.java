@@ -1,6 +1,6 @@
-package boardPrac.practice.domain.repository;
+package boardPrac.practice.board.domain.repository;
 
-import boardPrac.practice.domain.entity.BoardReplyEntity;
+import boardPrac.practice.board.domain.entity.BoardReplyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
